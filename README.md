@@ -172,3 +172,6 @@ Results of adaptive normalization methods
 |         | 192 | 0.2582 | 0.2484  | 0.2357   | 0.2463 | 0.2338 | 0.2463  |
 |         | 336 | 0.3182 | 0.3088  | 0.2993   | 0.3096 | 0.2848 | 0.3062  |
 |         | 720 | 0.4231 | 0.4047  | 0.3803   | 0.4062 | 0.3868 | 0.4007  |
+
+## Q4.2: novelty
+ADAPT-Z introduces a new paradigm. Its novelty lies in shifting from traditional parameter updates to feature space adjustment. Existing online time series forecasting methods focus on updating model parameters, such as final layer weights or adapter modules. However, ADAPT-Z challenges this convention. It proposes that distribution shifts stem from changes in latent factors. Therefore, directly adjusting feature representations is more effective. To achieve this, ADAPT-Z introduces an adapter network. This network integrates current features and historical gradient information to predict correction terms. This approach solves the delayed feedback problem in multi-step prediction and ensures stable updates.
