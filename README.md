@@ -256,6 +256,22 @@ To evaluate performance under more significant distribution shifts, we modified 
 It can be observed that our method maintains an advantage even when facing significant distribution shifts.
 Additionally, we considered applying the same modification only to the middle one-third of the test dataset. This simulates a scenario with two abrupt change points. We conducted additional experiments for both cases using the SOFTS model and the ETT datasets.
 
+| Dataset |  H |   Ori   |   fOGD  |   OGD   |   DSOF  |  SOILD  |  ADCSD  | Proceed |   ADAPT-Z   |   IMP  |
+|:-------:|:--:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-----------:|:------:|
+|  ETTh1  |  1 | 0.1336  | 0.1193  | 0.1204  | 0.1301  | 0.1220  | 0.1310  | 0.1233  | **0.1193 ** | 10.70% |
+|         | 24 | 0.3647  | 0.3403  | 0.3448  | 0.3648  | 0.3340  | 0.3503  | 0.3391  | **0.3281 ** | 10.04% |
+|         | 48 | 0.3999  | 0.3867  | 0.3908  | 0.3991  | 0.3841  | 0.3974  | 0.3870  | **0.3806 ** |  4.84% |
+|  ETTh2  |  1 | 0.0765  | 0.0733  | 0.0739  | 0.0756  | 0.0746  | 0.0740  | 0.0735  | **0.0726 ** |  5.06% |
+|         | 24 | 0.1855  | 0.1804  | 0.1835  | 0.1855  | 0.1824  | 0.1857  | 0.1833  | **0.1789 ** |  3.54% |
+|         | 48 | 0.2405  | 0.2400  | 0.2482  | 0.2483  | 0.2389  | 0.2411  | 0.2388  | **0.2344 ** |  2.54% |
+|  ETTm1  |  1 | 0.0624  | 0.0592  | 0.0611  | 0.0601  | 0.0611  | 0.0612  | 0.0598  | **0.0578 ** |  7.32% |
+|         | 24 | 0.2904  | 0.2472  | 0.2583  | 0.2514  | 0.2493  | 0.2753  | 0.2471  | **0.2299 ** | 20.83% |
+|         | 48 | 0.3700  | 0.3308  | 0.3374  | 0.3371  | 0.3415  | 0.3572  | 0.3201  | **0.3025 ** | 18.25% |
+|  ETTm2  |  1 | 0.0395  | 0.3801  | 0.3811  | 0.3914  | 0.3805  | 0.3944  | 0.3799  | **0.0375 ** |  5.00% |
+|         | 24 | 0.1192  | 0.1163  | 0.1183  | 0.1170  | 0.1152  | 0.1195  | 0.1162  | **0.1141 ** |  4.23% |
+|         | 48 | 0.1555  | 0.1524  | 0.1552  | 0.1562  | 0.1533  | 0.1550  | 0.1522  | **0.1498 ** |  3.68% |
+
+
 ## Q4.1: longer forecasting horizons
 
 Regarding longer prediction horizons, please refer to our response to the final question from Reviewer 2. We conducted additional experiments using the ETT dataset with prediction horizons of 96, 192, 336, and 720 steps. The results consistently demonstrate the effectiveness of our method.
@@ -270,7 +286,22 @@ Practical Concerns Regarding Computational Efficiency: The efficiency analysis i
 
 Potential Ambiguity in Dataset Split Justification: The authors justify their use of a 60/10/30 train/val/test split by arguing it is more "realistic" than the 25/5/70 splits used in some prior work. While their reasoning is plausible, this choice results in a significantly shorter online deployment period for evaluation. This could make the adaptation challenge less severe compared to enduring a distribution shift over 70\% of the data, thereby complicating direct comparisons with results from papers that used the longer test split.
 ## Q1: delayed gradient
-Thank you for the feedback. You raised a valid point. Although we use gradients from the t-k step, it is important to note that the prediction at the t-k step involves the true value at time t. Since we use the true value at time t to calculate the gradients, this means our update at step t actually incorporates the latest available data. Therefore, even though the gradients are delayed, their impact may not be much significant .
+Thank you for the feedback. You raised a valid point. Although we use gradients from the t-k step, it is important to note that the prediction at the t-k step involves the true value at time t. Since we use the true value at time t to calculate the gradients, this means our update at step t actually incorporates the latest available data. Therefore, even though the gradients are delayed, their impact may not be much significant.
+
+| Dataset |  H |   Ori   |   fOGD  |   OGD   |   DSOF  |  SOILD  |  ADCSD  | Proceed |   ADAPT-Z   |   IMP  |
+|:-------:|:--:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-----------:|:------:|
+|  ETTh1  |  1 | 0.1671  | 0.1482  | 0.1442  | 0.1584  | 0.1531  | 0.1535  | 0.1395  | **0.1306 ** | 21.87% |
+|         | 24 | 0.4663  | 0.3764  | 0.4831  | 0.3874  | 0.3984  | 0.3982  | 0.3820  | **0.3415 ** | 26.76% |
+|         | 48 | 0.4697  | 0.4090  | 0.4345  | 0.4283  | 0.4294  | 0.4248  | 0.4123  | **0.3960 ** | 15.70% |
+|  ETTh2  |  1 | 0.0886  | 0.0856  | 0.0864  | 0.0858  | 0.0856  | 0.0877  | 0.0857  | **0.0832 ** |  6.08% |
+|         | 24 | 0.2019  | 0.1903  | 0.1973  | 0.1980  | 0.1963  | 0.1933  | 0.1952  | **0.1883 ** |  6.74% |
+|         | 48 | 0.2695  | 0.2535  | 0.2573  | 0.2604  | 0.2583  | 0.2589  | 0.2533  | **0.2490 ** |  7.60% |
+|  ETTm1  |  1 | 0.0753  | 0.0724  | 0.0735  | 0.0732  | 0.0741  | 0.0750  | 0.0721  | **0.0669 ** | 11.09% |
+|         | 24 | 0.4340  | 0.3471  | 0.3625  | 0.3982  | 0.2983  | 0.3340  | 0.2891  | **0.2431 ** | 43.99% |
+|         | 48 | 0.5302  | 0.3674  | 0.4093  | 0.4391  | 0.3821  | 0.4482  | 0.3701  | **0.3125 ** | 41.05% |
+|  ETTm2  |  1 | 0.0507  | 0.4804  | 0.4824  | 0.4810  | 0.4803  | 0.4862  | 0.4814  | **0.0471 ** |  7.20% |
+|         | 24 | 0.1501  | 0.1341  | 0.1340  | 0.1472  | 0.1408  | 0.1460  | 0.1331  | **0.1248 ** | 16.85% |
+|         | 48 | 0.1852  | 0.1673  | 0.1662  | 0.1764  | 0.1609  | 0.1773  | 0.1678  | **0.1590 ** | 14.14% |
 
 Regarding abrupt, non-gradual shifts, please refer to our response to Reviewer 3's fourth question. We simulated these shifts by artificially modifying test set data and conducted experiments across multiple datasets. ADAPT-Z still demonstrated competitive performance, suggesting that our method can adapt relatively well even with delayed gradient feedback. Finally, how to handle delayed feedback remains an important direction for future research.
 
