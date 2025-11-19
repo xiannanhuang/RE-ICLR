@@ -236,5 +236,9 @@ Regarding computational time, we report the results in Appendix A.7. Our method 
 
 Most existing papers on online time series forecasting conduct experiments on the datasets we mentioned, such as DSOF and SOLID. Compared to previous methods, we have increased the number of datasets used in our experiments. We now use a total of 12 datasets, all of which are real-world datasets. This should demonstrate generalizability and robustness across real-world deployment scenarios.
 
-To evaluate performance under more significant distribution shifts, we modified the test set data. The original data point at time t, denoted as $x_t$, was altered to $x_t + (t/L)sin(2π*t/T) + t/L)$, where $T$ represents the dataset's period and $L$ is the total length of the test dataset. This modification simulates a gradually intensifying distribution shift over time.
+To evaluate performance under more significant distribution shifts, we modified the test set data. The original data point at time t, denoted as $x_t$, was altered to $x_t + (t/L)sin(2π*t/T) + t/L$, where $T$ represents the dataset's period and $L$ is the total length of the test dataset. This modification simulates a gradually intensifying distribution shift over time.
 Additionally, we considered applying the same modification only to the middle one-third of the test dataset. This simulates a scenario with two abrupt change points. We conducted additional experiments for both cases using the SOFTS model and the ETT datasets.
+
+## Q4.1: longer forecasting horizons
+
+Regarding longer prediction horizons, please refer to our response to the final question from Reviewer 2. We conducted additional experiments using the ETT dataset with prediction horizons of 96, 192, 336, and 720 steps. The results consistently demonstrate the effectiveness of our method.
