@@ -291,7 +291,7 @@ Thank you for the feedback. You raised a valid point. Although we use gradients 
 Regarding abrupt, non-gradual shifts, please refer to our response to Reviewer 3's fourth question. We simulated these shifts by artificially modifying test set data and conducted experiments across multiple datasets. ADAPT-Z still demonstrated competitive performance, suggesting that our method can adapt relatively well even with delayed gradient feedback. Finally, how to handle delayed feedback remains an important direction for future research.
 
 ## Q2: comparison with TTA methods
-Thank you for your comment! We have reviewed a portion of the Test-Time Adaptation (TTA) literature and found that this technique was initially developed primarily for classification tasks. Classic methods include updating parameters in normalization layers, performing data augmentation, using mean teachers and memory banks, etc. However, these methods may not be able to directly applicable to time series data.
+Thank you for your comment! We have reviewed a portion of the Test-Time Adaptation (TTA) literature and found that this technique was initially developed primarily for classification tasks. Classic methods include updating parameters in normalization layers, performing data augmentation, using mean teachers and memory banks, etc. However, these methods may not be applicable directly to time series data.
 
 Several existing TTA works for time series, such as ADCSD, PETSA, and TAFAS, are discussed in our paper. Specifically, they all align with the two challenges we outlined in the introduction: 1) deciding which parameters to update and 2) determining how to update them.
 
