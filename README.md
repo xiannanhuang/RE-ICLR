@@ -35,7 +35,7 @@ To further investigate which feature layers are more suitable for our method, We
 |      | RMSD | 0.4836  | 0.4293  | 0.6923  |
 
 # More base model
-We conducted additional experiments on the ETT dataset using TimeFilter and TimeKAN. The results are as follows:
+We conducted additional experiments on the ETT datasets using TimeFilter and TimeKAN. The results are as follows:
 Results for TimeFilter:
 | Dataset | H  | Ori    | fOGD   | OGD    | DSOF   | SOILD  | ADCSD  | Proceed | ADAPT-Z | IMP    |
 |---------|----|--------|--------|--------|--------|--------|--------|---------|---------|--------|
