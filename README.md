@@ -1,3 +1,5 @@
+# Review1
+# Questions
 The novelty of ADAPT-Z seems limited as its design combines adapters and historical gradients, which are extensively studied in Parameter-Efficient Fine-Tuning (PEFT) and continual learning, respectively. The contribution is more of an engineering integration rather than a novel contribution. The authors should further emphasize their main contribution.
 
 in Table 2, the reported performance for baselines FSNet and OneNet is highly questionable. Their MSEs are orders of magnitude worse than other methods and drastically inconsistent with their original papers. Such a stark discrepancy suggests potential issues with their implementation or the experimental setup, making a fair comparison questionable. The authors should clarify this significant discrepancy.
@@ -76,6 +78,7 @@ Lau, Ying-yee Ava, Zhiwen Shao, and Dit-Yan Yeung. "Fast and Slow Streams for On
 
 
 # Reviewer 2
+## Qusetions
 The paper identifies concept drift as a key limitation of existing research schemes, but the method does not explain how ADAPT-Z addresses it, making it unclear why concept drift is mentioned.
 
 For the main results, the metric used for evaluation is MSE. Could the performance of various methods also be examined using MAE?
