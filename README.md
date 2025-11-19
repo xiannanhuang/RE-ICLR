@@ -128,7 +128,7 @@ We also conducted experiments on the SOFTS model. Similar to the iTransformer ex
 It appears that the best prediction results can come from different layer. 
 However, please refer to our response to Reviewer 1's Question 3. We aggregated the gradients of features during deployment and calculated the mean and Root Mean Square Difference (RMSD) of these gradients. We then examined their relationship with the final MSE. The results show a certain positive correlation between RMSD of the gradients and the final MSE. This implies that during online deployment, features with more stable gradients lead to better prediction performance. In other words, it is beneficial for online deployment if the feature estimates are consistently biased high or consistently biased low. However, if the feature estimates are sometimes too high and sometimes too low, this is detrimental to online deployment.
 
-## Q4.1: longer prediction horizon
+## Q4: longer prediction horizon
 We conducted additional experiments on the ETT datasets for prediction lengths of 96, 192, 336, and 720. The experiments included our proposed ADAPT-Z method, various online forecasting baseline methods, adaptive normalization methods (FAN, DIST-ST), and adaptive normalization methods combined with ADAPT-Z. The results are shown in the table below. All experiments were based on the iTransformer model.
 
 Results of baseline methods
@@ -173,5 +173,5 @@ Results of adaptive normalization methods
 |         | 336 | 0.3182 | 0.3088  | 0.2993   | 0.3096 | 0.2848 | 0.3062  |
 |         | 720 | 0.4231 | 0.4047  | 0.3803   | 0.4062 | 0.3868 | 0.4007  |
 
-## Q4.2: novelty
+## Q5: novelty
 ADAPT-Z introduces a new paradigm. Its novelty lies in shifting from traditional parameter updates to feature space adjustment. Existing online time series forecasting methods focus on updating model parameters, such as final layer weights or adapter modules. However, ADAPT-Z challenges this convention. It proposes that distribution shifts stem from changes in latent factors. Therefore, directly adjusting feature representations is more effective. To achieve this, ADAPT-Z introduces an adapter network. This network integrates current features and historical gradient information to predict correction terms. This approach solves the delayed feedback problem in multi-step prediction and ensures stable updates.
