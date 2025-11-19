@@ -128,3 +128,47 @@ We also conducted experiments on the SOFTS model. Similar to the iTransformer ex
 It appears that the best prediction results can come from different layer. 
 However, please refer to our response to Reviewer 1's Question 3. We aggregated the gradients of features during deployment and calculated the mean and Root Mean Square Difference (RMSD) of these gradients. We then examined their relationship with the final MSE. The results show a certain positive correlation between RMSD of the gradients and the final MSE. This implies that during online deployment, features with more stable gradients lead to better prediction performance. In other words, it is beneficial for online deployment if the feature estimates are consistently biased high or consistently biased low. However, if the feature estimates are sometimes too high and sometimes too low, this is detrimental to online deployment.
 
+## Q4.1: longer prediction horizon
+We conducted additional experiments on the ETT datasets for prediction lengths of 96, 192, 336, and 720. The experiments included our proposed ADAPT-Z method, various online forecasting baseline methods, adaptive normalization methods (FAN, DIST-ST), and adaptive normalization methods combined with ADAPT-Z. The results are shown in the table below. All experiments were based on the iTransformer model.
+
+Results of baseline methods
+
+| Dataset | H   | Ori    | fOGD   | OGD    | DSOF   | SOILD  | ADCSD  | Proceed | ADAPT-Z | IMP    |
+|---------|-----|--------|--------|--------|--------|--------|--------|---------|---------|--------|
+| **ETTh1** | 96  | 0.4092 | 0.4011 | 0.4035 | 0.4018 | 0.4044 | 0.4019 | 0.4019  | **0.3930** | 3.96%  |
+|         | 192 | 0.4857 | 0.4832 | 0.4828 | 0.4816 | 0.4844 | 0.4823 | 0.4829  | **0.4702** | 3.19%  |
+|         | 336 | 0.5032 | 0.4953 | 0.5037 | 0.4985 | 0.5053 | 0.5008 | 0.4927  | **0.4710** | 6.40%  |
+|         | 720 | 0.5389 | 0.5116 | 0.5139 | 0.5158 | 0.5187 | 0.5162 | 0.5114  | **0.4855** | 9.91%  |
+| **ETTh2** | 96  | 0.2978 | 0.2773 | 0.2770 | 0.2778 | 0.2796 | 0.2773 | 0.2777  | **0.2741** | 7.96%  |
+|         | 192 | 0.3924 | 0.3876 | 0.3887 | 0.3878 | 0.3951 | 0.3922 | 0.3869  | **0.3751** | 4.41%  |
+|         | 336 | 0.4283 | 0.4245 | 0.4247 | 0.4275 | 0.4265 | 0.4288 | 0.4251  | **0.4050** | 5.44%  |
+|         | 720 | 0.4382 | 0.4326 | 0.4415 | 0.4402 | 0.4446 | 0.4426 | 0.4298  | **0.4138** | 5.57%  |
+| **ETTm1** | 96  | 0.3894 | 0.3899 | 0.3937 | 0.3899 | 0.3926 | 0.3920 | 0.3887  | **0.3769** | 3.21%  |
+|         | 192 | 0.4082 | 0.4074 | 0.4088 | 0.4066 | 0.4120 | 0.4098 | 0.4058  | **0.3929** | 3.75%  |
+|         | 336 | 0.4362 | 0.4392 | 0.4411 | 0.4413 | 0.4410 | 0.4410 | 0.4355  | **0.4222** | 3.21%  |
+|         | 720 | 0.5123 | 0.5164 | 0.5172 | 0.5182 | 0.5174 | 0.5178 | 0.5116  | **0.4930** | 3.77%  |
+| **ETTm2** | 96  | 0.1983 | 0.1924 | 0.1917 | 0.1927 | 0.1938 | 0.1931 | 0.1908  | **0.1879** | 5.24%  |
+|         | 192 | 0.2582 | 0.2533 | 0.2536 | 0.2535 | 0.2534 | 0.2523 | 0.2520  | **0.2463** | 4.61%  |
+|         | 336 | 0.3182 | 0.3193 | 0.3214 | 0.3186 | 0.3222 | 0.3187 | 0.3168  | **0.3062** | 3.77%  |
+|         | 720 | 0.4231 | 0.4182 | 0.4219 | 0.4174 | 0.4255 | 0.4202 | 0.4174  | **0.4007** | 5.29%  |
+
+Results of adaptive normalization methods
+
+| Dataset | H   | Ori    | DISH-TS | DISH-TS+ | FAN    | FAN+   | ADAPT-Z |
+|---------|-----|--------|---------|----------|--------|--------|---------|
+| **ETTh1** | 96  | 0.4092 | 0.3969  | 0.3745   | 0.3955 | 0.3762 | 0.3930  |
+|         | 192 | 0.4857 | 0.4742  | 0.4476   | 0.4712 | 0.4375 | 0.4702  |
+|         | 336 | 0.5032 | 0.4766  | 0.4575   | 0.4744 | 0.4379 | 0.4710  |
+|         | 720 | 0.5389 | 0.4930  | 0.4744   | 0.4917 | 0.4694 | 0.4855  |
+| **ETTh2** | 96  | 0.2978 | 0.2781  | 0.2673   | 0.2792 | 0.2554 | 0.2741  |
+|         | 192 | 0.3924 | 0.3792  | 0.3574   | 0.3788 | 0.3629 | 0.3751  |
+|         | 336 | 0.4283 | 0.4111  | 0.3901   | 0.4089 | 0.3876 | 0.4050  |
+|         | 720 | 0.4382 | 0.4191  | 0.3989   | 0.4191 | 0.3973 | 0.4138  |
+| **ETTm1** | 96  | 0.3894 | 0.3789  | 0.3644   | 0.3810 | 0.3619 | 0.3769  |
+|         | 192 | 0.4082 | 0.3945  | 0.3800   | 0.3966 | 0.3728 | 0.3929  |
+|         | 336 | 0.4362 | 0.4269  | 0.4140   | 0.4242 | 0.3958 | 0.4222  |
+|         | 720 | 0.5123 | 0.4964  | 0.4809   | 0.4962 | 0.4761 | 0.4930  |
+| **ETTm2** | 96  | 0.1983 | 0.1908  | 0.1819   | 0.1879 | 0.1777 | 0.1879  |
+|         | 192 | 0.2582 | 0.2484  | 0.2357   | 0.2463 | 0.2338 | 0.2463  |
+|         | 336 | 0.3182 | 0.3088  | 0.2993   | 0.3096 | 0.2848 | 0.3062  |
+|         | 720 | 0.4231 | 0.4047  | 0.3803   | 0.4062 | 0.3868 | 0.4007  |
