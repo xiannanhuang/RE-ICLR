@@ -13,3 +13,20 @@ Essentially, most online deployment or Parameter-Efficient Fine-Tuning (PEFT) wo
 # performance for baselines FSNet and OneNet
 Thank you for your valuable feedback.
 In the original OneNet and FSNet papers, the reported results were based on experiments with data leakage. Specifically, for predicting the next k steps, at step t, these methods use the model’s predictions for steps t+1 to t+k, as well as the true values for steps t+1 to t+k to update parameters. But the true values for steps t+1 to t+k are not available at step t. This issue is also mentioned in the DSOF paper. Additionally, that paper conducted experiments without data leakage. In their Table 2, the results for FSNet and OneNet differ by orders of magnitude compared to the original models. To ensure a fair comparison, our experiments on OneNet and FSNet are entirely based on the data leakage-free version of the code provided in the official DSOF repository. 
+
+
+#
+Thank you for raising this question.
+To further investigate which feature layers are more suitable for our method, We computed the Root Mean Square Difference (RMSD) of the feature gradients. This metric is related to the stability of gradients across different time steps. Additionally, we calculated the Mean Absolute Value of the feature gradients, which, to some extent, reflects the severity of the distribution shift. We examined whether these statistics correlate with the performance of ADAPT-Z. The results are shown below. It can be observed that RMSD has a clear positive correlation with the final MSE. This suggests that during deployment, more stable gradients lead to better performance.
+|      | H   | 1       | 24      | 48      |
+|------|-----|---------|---------|---------|
+| **electricity** | mean  | 0.1243  | 0.2482  | 0.1239  |
+|      | RMSD | 0.5432  | 0.4119  | 0.4790  |
+| **PEMS03**  | mean  | -0.3240 | 0.2934  | 0.1528  |
+|      | RMSD | 0.5382  | 0.6253  | 0.4921  |
+| **PEMS07**  | mean  | 0.1943  | -0.0835 | 0.0832  |
+|      | RMSD | 0.6341  | 0.5612  | 0.6267  |
+| **solar**   | mean  | 0.1432  | 0.2732  | 0.3854  |
+|      | RMSD | 0.6390  | 0.5192  | 0.5715  |
+| **weather** | mean  | 0.0211  | -0.0982 | 0.1693  |
+|      | RMSD | 0.4836  | 0.4293  | 0.6923  |
