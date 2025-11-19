@@ -87,7 +87,7 @@ The idea is quite simple. Can you clarify the novelty lies in the proposed metho
 ## Q1: concept drift
 Thank you for your comment. ADAPT-Z implicitly handles concept drift through feature-space correction. Its core mechanism works as follows: The prediction model is divided into an encoder (f) and a prediction head (g). The encoder extracts feature representations z from observed data, while the prediction head uses z for forecasting. Due to model obsolescence, the prediction g(z) often differs from the true value y. Therefore, ADAPT-Z finds a correction term $\delta$ such that g(z+$\delta$) approximates y. This approach essentially adjusts feature representations to adapt to changes in the current data distribution, thereby mitigating concept drift. Although the term "concept drift" is not explicitly used in the method description, ADAPT-Z's entire design aims to handle distribution shifts, including concept drift. It keeps the model up-to-date through feature adjustment and online learning, enabling it to adapt to distribution changes.
 
-##Q2 MAE
+## Q2 MAE
 Thank you for your feedback.
 Our method also outperforms existing approaches on the MAE metric. The reason we did not include MAE results in the main text was to keep the table manageable. We report the  MAE on the ETT datasets in the table below (The reported MAE is the average value for three prediction models).
 
@@ -107,10 +107,10 @@ Our method also outperforms existing approaches on the MAE metric. The reason we
 |         | 48 | 0.2516 | 0.2480 | 0.2512 | 0.3000 | 0.2515 | 0.2508 | 0.2564  | **0.2473** |
 
 
-##Q3: feature location
+## Q3: feature location
 We also conducted experiments on the SOFTS model. Similar to the iTransformer experiments, we extracted features from various layers for feature correction. The final results are shown in the table below.
 
-| Method | electricity_1 | electricity_24 | electricity_48 | PEMS03_1 | PEMS03_24 | PEMS03_48 | PEMS07_1 | PEMS07_24 | PEMS07_48 | solar_1 | solar_24 | solar_48 | weather_1 | weather_24 | weather_48 |
+| Location | electricity_1 | electricity_24 | electricity_48 | PEMS03_1 | PEMS03_24 | PEMS03_48 | PEMS07_1 | PEMS07_24 | PEMS07_48 | solar_1 | solar_24 | solar_48 | weather_1 | weather_24 | weather_48 |
 |--------|---------------|----------------|----------------|----------|-----------|-----------|----------|-----------|-----------|---------|----------|----------|-----------|------------|------------|
 | ori    | 0.0485        | 0.1104         | 0.1338         | 0.0390   | 0.0912    | 0.1419    | 0.0365   | 0.0893    | 0.1375    | 0.0076  | 0.0969   | 0.1542   | 0.0591    | 0.1695     | 0.2426     |
 | input  | 0.0611        | 0.1324         | 0.2649         | 0.0892   | 0.1000    | 0.1413    | 0.0412   | 0.0923    | 0.1435    | 0.0080  | 0.1104   | 0.1868   | 0.0641    | 0.1717     | 0.2512     |
