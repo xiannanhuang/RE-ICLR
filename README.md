@@ -175,3 +175,39 @@ Results of adaptive normalization methods
 
 ## Q5: novelty
 ADAPT-Z introduces a new paradigm. Its novelty lies in shifting from traditional parameter updates to feature space adjustment. Existing online time series forecasting methods focus on updating model parameters, such as final layer weights or adapter modules. However, ADAPT-Z challenges this convention. It proposes that distribution shifts stem from changes in latent factors. Therefore, directly adjusting feature representations is more effective. To achieve this, ADAPT-Z introduces an adapter network. This network integrates current features and historical gradient information to predict correction terms. This approach solves the delayed feedback problem in multi-step prediction and ensures stable updates.
+
+# Reviewer 3
+## Questions
+While the experiments are extensive and demonstrate consistent gains, they lack statistical robustness, as no variance or confidence intervals are reported across different random seeds, making it difficult to assess the reliability of the improvements. 
+ 
+ The evaluation could be broadened to include a wider range of model architectures, such as MLP-based and linear forecasting models, which are common baselines in the time-series literature. 
+ 
+ The computational efficiency of the approach is also unclear, particularly the memory and runtime overhead introduced by storing and updating historical gradients, which may limit scalability in long-horizon or high-frequency settings. 
+ 
+ Furthermore, assessing performance under stronger distribution shifts or longer forecasting horizons would provide stronger evidence of generalizability and robustness across real-world deployment scenarios.
+
+ # Q1: Robustness across different random seeds
+ 
+ We report the experimental results for iTransformer using three random seeds in the Appendix (A.6.1). This demonstrates that our method remains effective across different random seeds. Regarding your interest in statistical robustness, we have conducted additional experiments on the SOFTS and TimesNET models using the ETT datasets with three random seeds (2024, 2025, and 2026). The results, including both the MSE and the standard deviation of MSE, are reported below.
+
+**SOFTS**
+
+| Dataset | H  | Ori_mean | Ori_std | fOGD_mean | fOGD_std | OGD_mean | OGD_std | DSOF_mean | DSOF_std | SOLID_mean | SOLID_std | ADCSD_mean | ADCSD_std | Proceed_mean | Proceed_std | ADAPT-Z_mean | ADAPT-Z_std |
+|---------|----|----------|---------|-----------|----------|----------|---------|-----------|----------|------------|-----------|------------|-----------|--------------|-------------|--------------|-------------|
+| **ETTh1** | 1  | 0.1211 | 0.0021 | 0.1209 | 0.0028 | 0.1192 | 0.0020 | 0.1316 | 0.0004 | 0.1194 | 0.0024 | 0.1199 | 0.0026 | 0.1203 | 0.0025 | **0.1122** | 0.0026 |
+|         | 24 | 0.3182 | 0.0012 | 0.3217 | 0.0020 | 0.3223 | 0.0010 | 0.3312 | 0.0010 | 0.3228 | 0.0031 | 0.3172 | 0.0011 | 0.3210 | 0.0031 | **0.3029** | 0.0013 |
+|         | 48 | 0.3666 | 0.0063 | 0.3656 | 0.0054 | 0.3657 | 0.0064 | 0.3894 | 0.0020 | 0.3600 | 0.0054 | 0.3618 | 0.0066 | 0.3625 | 0.0053 | **0.3522** | 0.0029 |
+| **ETTh2** | 1  | 0.0702 | 0.0023 | 0.0700 | 0.0024 | 0.0692 | 0.0024 | 0.0691 | 0.0018 | 0.0700 | 0.0019 | 0.0699 | 0.0026 | 0.0701 | 0.0020 | **0.0661** | 0.0017 |
+|         | 24 | 0.1801 | 0.0009 | 0.1791 | 0.0009 | 0.1788 | 0.0008 | 0.1834 | 0.0008 | 0.1797 | 0.0020 | 0.1807 | 0.0008 | 0.1784 | 0.0021 | **0.1729** | 0.0016 |
+|         | 48 | 0.2305 | 0.0031 | 0.2327 | 0.0031 | 0.2309 | 0.0033 | 0.2906 | 0.0079 | 0.2310 | 0.0035 | 0.2318 | 0.0032 | 0.2300 | 0.0035 | **0.2239** | 0.0016 |
+| **ETTm1** | 1  | 0.0570 | 0.0008 | 0.0554 | 0.0008 | 0.0552 | 0.0003 | 0.0741 | 0.0006 | 0.0563 | 0.0004 | 0.0555 | 0.0009 | 0.0566 | 0.0005 | **0.0523** | 0.0002 |
+|         | 24 | 0.2384 | 0.0038 | 0.2385 | 0.0050 | 0.2390 | 0.0042 | 0.2888 | 0.0051 | 0.2419 | 0.0032 | 0.2399 | 0.0040 | 0.2396 | 0.0033 | **0.2148** | 0.0012 |
+|         | 48 | 0.3154 | 0.0140 | 0.3081 | 0.0103 | 0.3122 | 0.0138 | 0.3935 | 0.0061 | 0.3156 | 0.0107 | 0.3087 | 0.0094 | 0.3123 | 0.0110 | **0.2865** | 0.0030 |
+| **ETTm2** | 1  | 0.0335 | 0.0005 | 0.0336 | 0.0005 | 0.0337 | 0.0005 | 0.0448 | 0.0001 | 0.0338 | 0.0006 | 0.0335 | 0.0005 | 0.0337 | 0.0005 | **0.0322** | 0.0002 |
+|         | 24 | 0.1062 | 0.0012 | 0.1078 | 0.0012 | 0.1075 | 0.0012 | 0.1532 | 0.0015 | 0.1079 | 0.0026 | 0.1074 | 0.0011 | 0.1072 | 0.0026 | **0.1032** | 0.0001 |
+|         | 48 | 0.1439 | 0.0017 | 0.1422 | 0.0016 | 0.1444 | 0.0016 | 0.2063 | 0.0086 | 0.1426 | 0.0017 | 0.1415 | 0.0016 | 0.1423 | 0.0018 | **0.1399** | 0.0007 |
+
+**TimesNet**
+
+
+ 
