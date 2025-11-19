@@ -18,18 +18,18 @@ In the original OneNet and FSNet papers, the reported results were based on expe
 
 ## Q3: Feature lacation
 Thank you for raising this question.
-To further investigate which feature layers are more suitable for our method, We computed the Root Mean Square Difference (RMSD) of the feature gradients. This metric is related to the stability of gradients across different time steps. Additionally, we calculated the Mean Absolute Value of the feature gradients, which, to some extent, reflects the severity of the distribution shift. We examined whether these statistics correlate with the performance of ADAPT-Z. The results are shown below. It can be observed that RMSD has a clear positive correlation with the final MSE. This suggests that during deployment, more stable gradients lead to better performance.
+To further investigate which feature layers are more suitable for our method, We computed the Root Mean Square Difference (RMSD) of the feature gradients. This metric is related to the stability of gradients across different time steps. Additionally, we calculated the Mean Absolute Value (MAV) of the feature gradients, which, to some extent, reflects the severity of the distribution shift. We examined whether these statistics correlate with the performance of ADAPT-Z. The results are shown below. It can be observed that RMSD has a clear positive correlation with the final MSE. This suggests that during deployment, more stable gradients lead to better performance.
 |      | H   | 1       | 24      | 48      |
 |------|-----|---------|---------|---------|
-| **electricity** | mean  | 0.1243  | 0.2482  | 0.1239  |
+| **electricity** | MAV  | 0.1243  | 0.2482  | 0.1239  |
 |      | RMSD | 0.5432  | 0.4119  | 0.4790  |
-| **PEMS03**  | mean  | -0.3240 | 0.2934  | 0.1528  |
+| **PEMS03**  | MAV  | -0.3240 | 0.2934  | 0.1528  |
 |      | RMSD | 0.5382  | 0.6253  | 0.4921  |
-| **PEMS07**  | mean  | 0.1943  | -0.0835 | 0.0832  |
+| **PEMS07**  | MAV  | 0.1943  | -0.0835 | 0.0832  |
 |      | RMSD | 0.6341  | 0.5612  | 0.6267  |
-| **solar**   | mean  | 0.1432  | 0.2732  | 0.3854  |
+| **solar**   | MAV  | 0.1432  | 0.2732  | 0.3854  |
 |      | RMSD | 0.6390  | 0.5192  | 0.5715  |
-| **weather** | mean  | 0.0211  | -0.0982 | 0.1693  |
+| **weather** | MAV  | 0.0211  | -0.0982 | 0.1693  |
 |      | RMSD | 0.4836  | 0.4293  | 0.6923  |
 
 ## Q4: More base model
