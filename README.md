@@ -224,3 +224,17 @@ While the experiments are extensive and demonstrate consistent gains, they lack 
 |         | 24 | 0.1128 | 0.0016 | 0.1151 | 0.0014 | 0.1126 | 0.0010 | 0.1673 | 0.0015 | 0.1148 | 0.0031 | 0.1141 | 0.0012 | 0.1139 | 0.0023 | **0.1054** | 0.0001 |
 |         | 48 | 0.1560 | 0.0020 | 0.1509 | 0.0012 | 0.1558 | 0.0021 | 0.2434 | 0.0099 | 0.1511 | 0.0018 | 0.1535 | 0.0016 | 0.1523 | 0.0020 | **0.1438** | 0.0008 |
  
+## Q2: more base model
+Thank you for your comment. We would like to point out that SOFTS is indeed an MLP-based model. As for linear models, we did not include them in our experiments because a simple linear model cannot be decomposed into an encoder and a prediction head. Additionally, if you have further concerns about the generality of our method, please refer to our response to Reviewer 1's fourth question. We have also conducted additional experiments with TimeFilter and TimeKAN. These results further demonstrate the effectiveness of our approach. 
+
+## Q3: memory and runtime overhead
+Thank you for your question. In fact, our method only requires the historical gradients from the previous k steps when performing an update. Gradients from earlier steps do not need to be stored and can be discarded. Therefore, storing historical gradients does not require significant memory.
+
+Regarding computational time, we report the results in Appendix A.7. Our method completes online testing in minutes, even for datasets comprising thousands of time steps, corresponding to a processing rate of dozens of time steps per second. This demonstrates its suitability for practical deployment.
+
+## Q4.1 : performance under stronger distribution to provide evidence of generalizability and robustness across real-world deployment scenarios
+
+Most existing papers on online time series forecasting conduct experiments on the datasets we mentioned, such as DSOF and SOLID. Compared to previous methods, we have increased the number of datasets used in our experiments. We now use a total of 12 datasets, all of which are real-world datasets. This should demonstrate generalizability and robustness across real-world deployment scenarios.
+
+To evaluate performance under more significant distribution shifts, we modified the test set data. The original data point at time t, denoted as $x_t$, was altered to $x_t + (t/L)sin(2π*t/T) + t/L)$, where $T$ represents the dataset's period and $L$ is the total length of the test dataset. This modification simulates a gradually intensifying distribution shift over time.
+Additionally, we considered applying the same modification only to the middle one-third of the test dataset. This simulates a scenario with two abrupt change points. We conducted additional experiments for both cases using the SOFTS model and the ETT datasets.
