@@ -12,7 +12,7 @@ Essentially, most online deployment or Parameter-Efficient Fine-Tuning (PEFT) wo
 
 # Performance for baselines FSNet and OneNet
 Thank you for your valuable feedback.
-In the original OneNet and FSNet papers, the reported results were based on experiments with data leakage. Specifically, for predicting the next k steps, at step t, these methods use the model’s predictions for steps t+1 to t+k, as well as the true values for steps t+1 to t+k to update parameters. But the true values for steps t+1 to t+k are not available at step t. This issue is also mentioned in the DSOF paper. Additionally, that paper conducted experiments without data leakage. In their Table 2, the results for FSNet and OneNet differ by orders of magnitude compared to the original models. To ensure a fair comparison, our experiments on OneNet and FSNet are entirely based on the data leakage-free version of the code provided in the official DSOF repository. 
+In the original OneNet and FSNet papers, the reported results were based on experiments with data leakage. Specifically, when predicting the next k steps at time t, these methods use the model’s predictions for steps t+1 to t+k, as well as the true values for steps t+1 to t+k to update parameters. But the true values for steps t+1 to t+k are not available at step t. This issue is also mentioned in the DSOF paper. Additionally, that paper conducted experiments without data leakage. In their Table 2, the results for FSNet and OneNet differ by orders of magnitude compared to the original models. To ensure a fair comparison, our experiments on OneNet and FSNet are entirely based on the data leakage-free version of the code provided in the official DSOF repository. 
 
 **Reference**
 
