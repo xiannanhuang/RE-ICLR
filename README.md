@@ -8,7 +8,7 @@ More recent prediction models should be compared to further validate the effecti
 
 # Novelty
 Thank you for your suggestion.
-Essentially, most online deployment or Parameter-Efficient Fine-Tuning (PEFT) work for time series prediction needs to address two issues: which parameters to update and how to update them. We propose that changes in data distribution stem from shifts in the underlying latent variables that determine the distribution. Therefore, we avoid the concept of updating parameters and propose a method to update feature representations instead. 
+Essentially, most online deployment or Parameter-Efficient Fine-Tuning (PEFT) work for time series prediction needs to address two issues: which parameters to update and how to update them. We propose that changes in data distribution stem from shifts in the underlying latent variables that determine the distribution. Therefore, we avoid the concept of updating parameters and propose a method to update feature representations instead. And we propose to use current features and historical gradients to update the features in order to alleviate the delayed feedback issue present in multi-step prediction.
 
 # Performance for baselines FSNet and OneNet
 Thank you for your valuable feedback.
