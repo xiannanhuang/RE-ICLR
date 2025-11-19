@@ -236,9 +236,59 @@ Regarding computational time, we report the results in Appendix A.7. Our method 
 
 Most existing papers on online time series forecasting conduct experiments on the datasets we mentioned, such as DSOF and SOLID. Compared to previous methods, we have increased the number of datasets used in our experiments. We now use a total of 12 datasets, all of which are real-world datasets. This should demonstrate generalizability and robustness across real-world deployment scenarios.
 
-To evaluate performance under more significant distribution shifts, we modified the test set data. The original data point at time t, denoted as $x_t$, was altered to $x_t + (t/L)sin(2π*t/T) + N(t/L,0.5)$, where $T$ represents the dataset's period and $L$ is the total length of the test dataset. This modification simulates a gradually intensifying distribution shift over time.
+To evaluate performance under more significant distribution shifts, we modified the test set data. The original data point at time t, denoted as $x_t$, was altered to $x_t + (t/L)sin(2π*t/T) + N(t/L,0.1)$, where $T$ represents the dataset's period and $L$ is the total length of the test dataset. This modification simulates a gradually intensifying distribution shift over time.
+
+| Dataset |  H |   Ori   |   fOGD   |   OGD   |   DSOF  |  SOILD  |  ADCSD  |  Proceed |   ADAPT-Z   |   IMP  |
+|:-------:|:--:|:-------:|:--------:|:-------:|:-------:|:-------:|:-------:|:--------:|:-----------:|:------:|
+|  ETTh1  |  1 | 0.4307  | 0.182259 | 0.1970  | 0.1528  | 0.2283  | 0.4009  | 0.373775 | **0.1366 ** | 68.28% |
+|         | 24 | 1.6932  | 0.647126 | 0.6333  | 0.5823  | 0.5832  | 0.8472  | 0.6823   | **0.4833 ** | 71.46% |
+|         | 48 | 1.1808  | 0.726304 | 0.8342  | 0.7324  | 0.7341  | 0.9953  | 0.7143   | **0.4940 ** | 58.16% |
+|  ETTh2  |  1 | 0.1682  | 0.091484 | 0.1006  | 0.0892  | 0.1760  | 0.1652  | 0.178179 | **0.0792 ** | 52.93% |
+|         | 24 | 0.6570  | 0.311263 | 0.3053  | 0.2984  | 0.3082  | 0.2845  | 0.2887   | **0.2353 ** | 64.19% |
+|         | 48 | 1.4902  | 0.956343 | 0.8374  | 0.4734  | 0.6038  | 0.7492  | 0.5324   | **0.4039 ** | 72.90% |
+|  ETTm1  |  1 | 0.1526  | 0.067203 | 0.0693  | 0.0634  | 0.0698  | 0.0753  | 0.0702   | **0.0580 ** | 61.96% |
+|         | 24 | 2.7340  | 0.54861  | 0.5092  | 0.3827  | 0.4093  | 0.4933  | 0.3864   | **0.3279 ** | 88.01% |
+|         | 48 | 3.2053  | 0.9834   | 0.8472  | 0.7834  | 0.7341  | 1.2120  | 0.6872   | **0.4493 ** | 85.98% |
+|  ETTm2  |  1 | 0.0686  | 0.0431   | 0.0473  | 0.0401  | 0.0482  | 0.0421  | 0.0410   | **0.0345 ** | 49.73% |
+|         | 24 | 1.0900  | 0.1820   | 0.1983  | 0.1734  | 0.1732  | 0.2938  | 0.1701   | **0.1587 ** | 85.44% |
+|         | 48 | 1.1642  | 0.2468   | 0.2384  | 0.2231  | 0.2743  | 0.2480  | 0.2393   | **0.1936 ** | 83.37% |
+
+It can be observed that our method maintains an advantage even when facing significant distribution shifts.
 Additionally, we considered applying the same modification only to the middle one-third of the test dataset. This simulates a scenario with two abrupt change points. We conducted additional experiments for both cases using the SOFTS model and the ETT datasets.
 
 ## Q4.1: longer forecasting horizons
 
 Regarding longer prediction horizons, please refer to our response to the final question from Reviewer 2. We conducted additional experiments using the ETT dataset with prediction horizons of 96, 192, 336, and 720 steps. The results consistently demonstrate the effectiveness of our method.
+
+# Reviewer 4
+## Questions
+"Historical Gradient": The method relies on a "historical gradient" computed from a batch of data ending at timestep t-k to inform the feature correction at the current timestep t. While this is a pragmatic approach to handling delayed feedback, this term is not a true gradient for the current step but rather a delayed and averaged approximation. The paper could provide a clearer discussion on the implications of this temporal mismatch, especially in scenarios with abrupt, non-gradual shifts where this historical information might be stale or misleading.
+
+Insufficient Engagement with Test-Time Adaptation (TTA) Literature: The task of adapting a pre-trained model to a stream of incoming data under distribution shift is the central problem in the Test-Time Adaptation (TTA) field. The paper does not adequately position its work within this highly relevant body of literature in the main text. A more thorough comparison and discussion of the similarities and differences with TTA methods would provide better context for the paper's contributions.
+
+Practical Concerns Regarding Computational Efficiency: The efficiency analysis in the appendix reveals that ADAPT-Z, while often more memory-efficient than full-model fine-tuning, is slower in terms of runtime than most baseline methods. For real-world online applications where prediction latency is a critical constraint, this added computational cost could be a significant drawback. This trade-off between accuracy and speed deserves a more prominent discussion in the main paper.
+
+Potential Ambiguity in Dataset Split Justification: The authors justify their use of a 60/10/30 train/val/test split by arguing it is more "realistic" than the 25/5/70 splits used in some prior work. While their reasoning is plausible, this choice results in a significantly shorter online deployment period for evaluation. This could make the adaptation challenge less severe compared to enduring a distribution shift over 70\% of the data, thereby complicating direct comparisons with results from papers that used the longer test split.
+## Q1: delayed gradient
+Thank you for the feedback. You raised a valid point. Although we use gradients from the t-k step, it is important to note that the prediction at the t-k step involves the true value at time t. Since we use the true value at time t to calculate the gradients, this means our update at step t actually incorporates the latest available data. Therefore, even though the gradients are delayed, their impact may not be much significant .
+
+Regarding abrupt, non-gradual shifts, please refer to our response to Reviewer 3's fourth question. We simulated these shifts by artificially modifying test set data and conducted experiments across multiple datasets. ADAPT-Z still demonstrated competitive performance, suggesting that our method can adapt relatively well even with delayed gradient feedback. Finally, how to handle delayed feedback remains an important direction for future research.
+
+## Q2: comparison with TTA methods
+Thank you for your comment! We have reviewed a portion of the Test-Time Adaptation (TTA) literature and found that this technique was initially developed primarily for classification tasks. Classic methods include updating parameters in normalization layers, performing data augmentation, using mean teachers and memory banks, etc. However, these methods may not be able to directly applicable to time series data.
+
+Several existing TTA works for time series, such as ADCSD, PETSA, and TAFAS, are discussed in our paper. Specifically, they all align with the two challenges we outlined in the introduction: 1) deciding which parameters to update and 2) determining how to update them.
+
+For the "which parameters" question, ADCSD updates an adapter to correct model's output, while PETSA and TAFAS use adapters to modify the model's inputs and outputs. PETSA even employs a LoRA-like structure for its adapter. Regarding the "how to update" question, ADCSD performs adaptation by online gradient decent. PETSA and TAFAS utilize specific update schemes, such as using partially-observed ground truth for updates.
+
+According to our conceptual framework, distribution shifts stem from changes in the latent variables governing the data distribution. Therefore, updating these latent representations is more effective than updating model parameters. Consequently, for the "what to update" problem, we propose updating the feature representations. For the "how to update" problem, we use an adapter that integrates current features and historical gradient information to perform the updates.
+
+We hope this provides a thorough comparison and discussion of the similarities and differences with existing TTA methods. And we will add a subsection in the Appendix A of our paper to discuss these TTA methods.
+
+## Q3: computational efficiency
+Thank you for your feedback. While our method does need a longer runtime compared to some baseline approaches, the overall computational cost remains practical. Even on a high-dimensional dataset like Traffic (with 862 dimensions), our method can complete testing on the entire test set in approximately 10 minutes. Considering the test set contains over 3,000 time steps, this means our method can process about 5 time steps per second. For lower-dimensional datasets like ETTm2 (7 dimensions), it can process several dozen time steps per second. This level of computational efficiency should be sufficient for real-world deployment scenarios.
+
+## Q4: dataset splitting
+Thank you for your question! We have two main reasons for not using the 25/5/70 data split. First, as mentioned in our paper, this would result in an excessively long online deployment phase (sometimes nearly two years). In practice, it is unlikely for a model to be deployed for so long with only online adaptation and no retraining.
+Additionally, although not stated in the paper, using only 25\% of the data for training cannot guarantee that the model is fully trained. This creates an ambiguity: if the prediction accuracy improves during deployment, it is difficult to determine whether the improvement comes from addressing distribution shift, or simply from the model being trained with more data and thus reaching its potential.
+Regarding this issue of insufficient model training, please refer to the experimental results in the DSOF paper (which uses a 25/5/75 split). On datasets like ETTm1 and Weather, more advanced models like iTransformer, PatchTST, and NSTransformer sometimes underperform the simple linear model DLinear. This counter-intuitive result is likely because these complex models are not adequately trained with only 25\% of the data.
