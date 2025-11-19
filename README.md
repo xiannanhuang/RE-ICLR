@@ -10,12 +10,14 @@ More recent prediction models should be compared to further validate the effecti
 Thank you for your suggestion.
 Essentially, most online deployment or Parameter-Efficient Fine-Tuning (PEFT) work for time series prediction needs to address two issues: which parameters to update and how to update them. We propose that changes in data distribution stem from shifts in the underlying latent variables that determine the distribution. Therefore, we avoid the concept of updating parameters and propose a method to update feature representations instead. 
 
-# performance for baselines FSNet and OneNet
+# Performance for baselines FSNet and OneNet
 Thank you for your valuable feedback.
 In the original OneNet and FSNet papers, the reported results were based on experiments with data leakage. Specifically, for predicting the next k steps, at step t, these methods use the model’s predictions for steps t+1 to t+k, as well as the true values for steps t+1 to t+k to update parameters. But the true values for steps t+1 to t+k are not available at step t. This issue is also mentioned in the DSOF paper. Additionally, that paper conducted experiments without data leakage. In their Table 2, the results for FSNet and OneNet differ by orders of magnitude compared to the original models. To ensure a fair comparison, our experiments on OneNet and FSNet are entirely based on the data leakage-free version of the code provided in the official DSOF repository. 
 
+**Reference**
+Lau, Ying-yee Ava, Zhiwen Shao, and Dit-Yan Yeung. "Fast and Slow Streams for Online Time Series Forecasting Without Information Leakage." The Thirteenth International Conference on Learning Representations. 2025. (DSOF)
 
-#
+# Feature lacation
 Thank you for raising this question.
 To further investigate which feature layers are more suitable for our method, We computed the Root Mean Square Difference (RMSD) of the feature gradients. This metric is related to the stability of gradients across different time steps. Additionally, we calculated the Mean Absolute Value of the feature gradients, which, to some extent, reflects the severity of the distribution shift. We examined whether these statistics correlate with the performance of ADAPT-Z. The results are shown below. It can be observed that RMSD has a clear positive correlation with the final MSE. This suggests that during deployment, more stable gradients lead to better performance.
 |      | H   | 1       | 24      | 48      |
@@ -31,7 +33,7 @@ To further investigate which feature layers are more suitable for our method, We
 | **weather** | mean  | 0.0211  | -0.0982 | 0.1693  |
 |      | RMSD | 0.4836  | 0.4293  | 0.6923  |
 
-# more basemodel
+# More base model
 We conducted additional experiments on the ETT dataset using TimeFilter and TimeKAN. The results are as follows:
 Results for TimeFilter:
 | Dataset | H  | Ori    | fOGD   | OGD    | DSOF   | SOILD  | ADCSD  | Proceed | ADAPT-Z | IMP    |
@@ -48,3 +50,20 @@ Results for TimeFilter:
 | **ETTm2** | 1  | 0.0317 | 0.0313 | 0.0314 | 0.0447 | 0.0313 | 0.0313 | 0.0311  | **0.0307** | 3.15%  |
 |         | 24 | 0.1062 | 0.1051 | 0.1065 | 0.1352 | 0.1065 | 0.1058 | 0.1065  | **0.0997** | 6.12%  |
 |         | 48 | 0.1388 | 0.1347 | 0.1369 | 0.1958 | 0.1350 | 0.1348 | 0.1347  | **0.1339** | 3.53%  |
+Results for TimeKAN:
+| Dataset | H  | Ori    | fOGD   | OGD    | DSOF   | SOILD  | ADCSD  | Proceed | ADAPT-Z | IMP    |
+|---------|----|--------|--------|--------|--------|--------|--------|---------|---------|--------|
+| **ETTh1** | 1  | 0.1277 | 0.1235 | 0.1238 | 0.1204 | 0.1194 | 0.1242 | 0.1198  | **0.1177** | 7.78%  |
+|         | 24 | 0.3215 | 0.3151 | 0.3134 | 0.3170 | 0.3182 | 0.3179 | 0.3130  | **0.3042** | 5.40%  |
+|         | 48 | 0.3652 | 0.3517 | 0.3537 | 0.3632 | 0.3482 | 0.3534 | 0.3483  | **0.3431** | 6.06%  |
+| **ETTh2** | 1  | 0.0679 | 0.0673 | 0.0675 | 0.0643 | 0.0660 | 0.0670 | 0.0660  | **0.0628** | 7.55%  |
+|         | 24 | 0.1779 | 0.1718 | 0.1725 | 0.1763 | 0.1691 | 0.1728 | 0.1689  | **0.1667** | 6.28%  |
+|         | 48 | 0.2205 | 0.2182 | 0.2189 | 0.2447 | 0.2173 | 0.2189 | 0.2173  | **0.2103** | 4.63%  |
+| **ETTm1** | 1  | 0.0581 | 0.0560 | 0.0568 | 0.0783 | 0.0569 | 0.0578 | 0.0564  | **0.0529** | 8.96%  |
+|         | 24 | 0.2705 | 0.2618 | 0.2678 | 0.3055 | 0.2615 | 0.2661 | 0.2616  | **0.2458** | 9.14%  |
+|         | 48 | 0.3393 | 0.3253 | 0.3299 | 0.3918 | 0.3177 | 0.3277 | 0.3175  | **0.3113** | 8.27%  |
+| **ETTm2** | 1  | 0.0320 | 0.0316 | 0.0317 | 0.0453 | 0.0318 | 0.0317 | 0.0316  | **0.0309** | 3.44%  |
+|         | 24 | 0.1100 | 0.1090 | 0.1084 | 0.1458 | 0.1082 | 0.1084 | 0.1087  | **0.1039** | 5.55%  |
+|         | 48 | 0.1481 | 0.1422 | 0.1423 | 0.1824 | 0.1424 | 0.1436 | 0.1423  | **0.1419** | 4.22%  |
+
+
